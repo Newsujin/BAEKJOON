@@ -1,0 +1,35 @@
+from collections import deque
+
+n, m = map(int, input().split())
+graph = [list(map(int, input().split())) for _ in range(n)]
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+cnt = 0
+size = 0
+
+def bfs(x, y):
+    size = 1
+    queue = deque()
+    queue.append((x, y))
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x + dx[i] 
+            ny = y + dy[i]
+            if -1 < nx < n and -1 < ny < m and graph[nx][ny] == 1:
+                graph[nx][ny] = 0
+                size += 1
+                queue.append((nx, ny))
+    return size
+
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 1:
+            graph[i][j] = 0
+            cnt += 1
+            size = max(size, bfs(i, j))
+
+print(cnt)
+print(size)
